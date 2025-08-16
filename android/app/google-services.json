@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1053098927926",
+    "project_id": "full-circle-ae442",
+    "storage_bucket": "full-circle-ae442.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053098927926:android:3fcee595ed1ea4b8bc7597",
+        "android_client_info": {
+          "package_name": "com.example.full_circle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5-Qiq40qdxJJWXeamEXuzv4o0J4oU5fw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
