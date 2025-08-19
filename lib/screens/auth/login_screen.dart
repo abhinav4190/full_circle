@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:full_circle/screens/terms_of_screen.dart';
 import 'package:get/get.dart';
-import '../controllers/auth_controller.dart';
-import '../utils/colors.dart';
-import '../widgets/custom_button.dart';
+import '../../controllers/auth_controller.dart';
+import '../../utils/colors.dart';
+import '../../widgets/custom_button.dart';
 
 class LoginScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());

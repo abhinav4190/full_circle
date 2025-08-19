@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/role_controller.dart';
-import '../utils/colors.dart';
+import '../../controllers/role_controller.dart';
+import '../../utils/colors.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   final RoleController roleController = Get.put(RoleController());

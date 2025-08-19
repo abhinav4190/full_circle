@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/role_controller.dart';
-import '../utils/colors.dart';
-import '../widgets/custom_button.dart';
-import 'home_screen.dart';
+import '../../controllers/role_controller.dart';
+import '../../utils/colors.dart';
+import '../../widgets/custom_button.dart';
+import '../home_screen.dart';
 
 class RoleSuccessScreen extends StatelessWidget {
   final RoleController roleController = Get.find();

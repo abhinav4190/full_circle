@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:full_circle/bindings/auth_binding.dart';
 import 'package:full_circle/controllers/auth_controller.dart';
 import 'package:full_circle/controllers/role_controller.dart';
+import 'package:full_circle/routes/app_routes.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'screens/splash_screen.dart';
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.background,
         fontFamily: 'Inter', // Make sure to add Inter font to pubspec.yaml
       ),
-      home: SplashScreen(),
+      initialRoute: AppRoutes.HOME,
+       getPages: AppRoutes.pages,
+      initialBinding: AuthBinding(),
       debugShowCheckedModeBanner: false,
     );
   }

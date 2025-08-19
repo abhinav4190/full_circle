@@ -2,7 +2,7 @@ import 'package:full_circle/utils/colors.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../controllers/auth_controller.dart';
-import '../screens/role_success_screen.dart';
+import '../screens/auth/role_success_screen.dart';
 
 class RoleController extends GetxController {
   var selectedRole = ''.obs;

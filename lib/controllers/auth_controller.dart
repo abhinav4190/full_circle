@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_storage/get_storage.dart';
-import '../screens/otp_screen.dart';
-import '../screens/role_selection_screen.dart';
+import '../screens/auth/otp_screen.dart';
+import '../screens/auth/role_selection_screen.dart';
 import '../screens/home_screen.dart';
-import '../screens/login_screen.dart';
+import '../screens/auth/login_screen.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;

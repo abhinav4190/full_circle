@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import '../controllers/auth_controller.dart';
-import '../utils/colors.dart';
-import '../widgets/custom_button.dart';
+import '../../controllers/auth_controller.dart';
+import '../../utils/colors.dart';
+import '../../widgets/custom_button.dart';
 
 class OTPScreen extends StatelessWidget {
   final String phoneNumber;
