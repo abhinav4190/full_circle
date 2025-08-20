@@ -1,15 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:full_circle/controllers/auth_controller.dart';
 import 'package:full_circle/routes/app_routes.dart';
+import 'package:full_circle/screens/producer/accepted_bids_history.dart';
 import 'package:full_circle/screens/producer/declare_waste_screen.dart';
+import 'package:full_circle/screens/producer/mrf_bids_screen.dart';
+import 'package:full_circle/screens/producer/notifications_screen.dart';
+import 'package:full_circle/screens/producer/profile_screen.dart';
 import 'package:full_circle/utils/colors.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
-class ProducerHomeScreen extends StatelessWidget {
+class ProducerHomeScreen extends StatefulWidget {
+  @override
+  _ProducerHomeScreenState createState() => _ProducerHomeScreenState();
+}
+
+class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
   final AuthController authController = Get.find();
+  int _currentIndex = 0;
 
-  ProducerHomeScreen({super.key});
+  final List<Widget> _screens = [
+    ProducerDashboard(), // Home content
+    DeclareWasteScreen(), // Your existing declare waste screen
+    AcceptedBidsHistoryScreen(), // Your existing history screen
+    ProfileScreen(), // Profile screen
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: Offset(0, -2),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.green.shade600,
+          unselectedItemColor: Colors.grey.shade500,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          items: [
+            BottomNavigationBarItem(
+              icon: _buildNavIcon(Icons.home, 0),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildNavIcon(Icons.add_box_outlined, 1),
+              label: 'Declare',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildNavIcon(Icons.history, 2),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildNavIcon(Icons.person_outline, 3),
+              label: 'Profile',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavIcon(IconData icon, int index) {
+    bool isSelected = _currentIndex == index;
+    return Container(
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.green.shade50 : Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(
+        icon,
+        color: isSelected ? Colors.green.shade600 : Colors.grey.shade500,
+      ),
+    );
+  }
+}
+
+// Separate the dashboard content into its own widget
+class ProducerDashboard extends StatelessWidget {
+  final AuthController authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +133,24 @@ class ProducerHomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_outlined, color: Colors.black),
-            onPressed: () {},
+            icon: Stack(
+              children: [
+                Icon(Icons.notifications_outlined, color: Colors.black),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            onPressed: () => Get.to(() => NotificationsScreen()),
           ),
         ],
       ),
@@ -55,31 +159,71 @@ class ProducerHomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search Bar
-            // Container(
-            //   decoration: BoxDecoration(
-            //     color: Color(0xFFF1F3F4),
-            //     borderRadius: BorderRadius.circular(12),
-            //   ),
-            //   child: TextField(
-            //     decoration: InputDecoration(
-            //       hintText: 'Search',
-            //       prefixIcon: Icon(Icons.search, color: Colors.grey),
-            //       border: InputBorder.none,
-            //       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            //     ),
-            //   ),
-            // ),
-
-            // SizedBox(height: 24),
-
             // Welcome Section
-            Text(
-              'Welcome Abhinav',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Colors.green.shade50, Colors.green.shade100],
+                ),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.green.shade200),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade500,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          Icons.waving_hand,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Welcome back!',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.green.shade700,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              'Abhinav',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'Ready to make a positive environmental impact today?',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.green.shade600,
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -152,7 +296,7 @@ class ProducerHomeScreen extends StatelessWidget {
                   child: _buildActionButton(
                     'Declare New Waste',
                     Icons.add,
-                     () => Get.toNamed(AppRoutes.DECLARE_WASTE),
+                    () => Get.toNamed(AppRoutes.DECLARE_WASTE),
                   ),
                 ),
               ],
@@ -164,17 +308,17 @@ class ProducerHomeScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: _buildActionButton(
-                    'View MRF Offers',
+                    'View MRF Bids',
                     Icons.search,
-                    () {},
+                    () => Get.to(() => MRFBidsScreen()),
                   ),
                 ),
                 SizedBox(width: 12),
                 Expanded(
                   child: _buildActionButton(
-                    'Book Pickup Slot',
+                    'Accepted Bids',
                     Icons.calendar_today,
-                    () {},
+                     () => Get.to(() => AcceptedBidsHistoryScreen()),
                   ),
                 ),
               ],
@@ -200,6 +344,13 @@ class ProducerHomeScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.grey.shade200),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
               child: Column(
                 children: [
@@ -248,27 +399,8 @@ class ProducerHomeScreen extends StatelessWidget {
             _buildApprovalItem('Plastic Waste', '10 tons'),
             SizedBox(height: 12),
             _buildApprovalItem('Paper Waste', '5 tons'),
-
-            // SizedBox(height: 100), // Bottom padding for navigation
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.green.shade600,
-        unselectedItemColor: Colors.grey,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_outlined),
-            label: 'Declare',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }
@@ -286,6 +418,13 @@ class ProducerHomeScreen extends StatelessWidget {
         color: bgColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,6 +459,13 @@ class ProducerHomeScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -382,6 +528,13 @@ class ProducerHomeScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
