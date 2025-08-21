@@ -32,6 +32,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           'Contact Support',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
@@ -223,7 +224,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       decoration: InputDecoration(
                         labelText: 'Message',
                         prefixIcon: Padding(
-                          padding: EdgeInsets.only(bottom: 60),
+                          padding: EdgeInsets.only(bottom: 95),
                           child: Icon(Icons.message_outlined, color: Colors.green.shade600),
                         ),
                         border: OutlineInputBorder(

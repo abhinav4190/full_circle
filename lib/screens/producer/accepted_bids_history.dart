@@ -69,13 +69,13 @@ class AcceptedBidsHistoryScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-            onPressed: () => Get.back(),
-          ),
-        ),
+        // leading: Padding(
+        //   padding: EdgeInsets.only(left: 20),
+        //   child: IconButton(
+        //     icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+        //     onPressed: () => Get.back(),
+        //   ),
+        // ),
         title: Text(
           'My Orders',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),

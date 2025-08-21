@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:full_circle/screens/producer/contact_support_screen.dart';
 import 'package:full_circle/screens/producer/edit_profile_screen.dart';
+import 'package:full_circle/screens/producer/faq_screen.dart';
 import 'package:full_circle/screens/producer/help_support_screen.dart';
 import 'package:get/get.dart';
 
@@ -12,8 +13,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   // Sample user data - replace with your actual data
   Map<String, String> userInfo = {
-    'name': 'Abhinav Kumar',
-    'email': 'abhinav.kumar@email.com',
+    'name': 'Abhinav Singh',
+    'email': 'abhinav.singh@email.com',
     'phone': '+91 98765 43210',
     'address': 'Sector 15, Jaipur, Rajasthan, India',
     'role': 'Waste Producer',
@@ -156,9 +157,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               'Settings & Preferences',
               [
                 _buildActionTile(Icons.edit_outlined, 'Edit Profile', () => _editProfile()),
-                _buildActionTile(Icons.notifications_outlined, 'Notifications', () {}),
+                // _buildActionTile(Icons.notifications_outlined, 'Notifications', () {}),
                 _buildActionTile(Icons.security_outlined, 'Privacy & Security', () {}),
-                _buildActionTile(Icons.language_outlined, 'Language', () {}),
+                // _buildActionTile(Icons.language_outlined, 'Language', () {}),
               ],
             ),
             
@@ -168,8 +169,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildSection(
               'Help & Support',
               [
-                _buildActionTile(Icons.help_outline, 'Help Center', () => Get.to(() => HelpSupportScreen())),
                 _buildActionTile(Icons.contact_support_outlined, 'Contact Support', () => Get.to(() => ContactSupportScreen())),
+                _buildActionTile(Icons.quiz, 'FAQ', () => Get.to(() => FAQScreen())),
                 _buildActionTile(Icons.star_outline, 'Rate App', () {}),
                 _buildActionTile(Icons.info_outline, 'About', () {}),
               ],
@@ -183,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: ElevatedButton(
                 onPressed: () => _logout(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.shade500,
+                  backgroundColor: const Color.fromARGB(255, 172, 68, 68),
                   foregroundColor: Colors.white,
                   minimumSize: Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
@@ -201,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             
-            SizedBox(height: 40),
+            SizedBox(height: 20),
           ],
         ),
       ),

@@ -3,7 +3,12 @@ import 'package:full_circle/screens/producer/contact_support_screen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-class FAQScreen extends StatelessWidget {
+class FAQScreen extends StatefulWidget {
+  @override
+  _FAQScreenState createState() => _FAQScreenState();
+}
+
+class _FAQScreenState extends State<FAQScreen> with TickerProviderStateMixin {
   final List<Map<String, String>> faqs = [
     {
       'question': 'How do I declare waste on the platform?',
@@ -39,6 +44,47 @@ class FAQScreen extends StatelessWidget {
     },
   ];
 
+  late List<AnimationController> _controllers;
+  late List<Animation<double>> _animations;
+  List<bool> _isExpanded = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _controllers = List.generate(
+      faqs.length,
+      (index) => AnimationController(
+        duration: Duration(milliseconds: 300),
+        vsync: this,
+      ),
+    );
+    
+    _animations = _controllers.map((controller) => 
+      CurvedAnimation(parent: controller, curve: Curves.easeInOut)
+    ).toList();
+    
+    _isExpanded = List.generate(faqs.length, (index) => false);
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _toggleExpansion(int index) {
+    setState(() {
+      _isExpanded[index] = !_isExpanded[index];
+      if (_isExpanded[index]) {
+        _controllers[index].forward();
+      } else {
+        _controllers[index].reverse();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +92,7 @@ class FAQScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           'FAQ',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
@@ -110,23 +157,33 @@ class FAQScreen extends StatelessWidget {
             
             SizedBox(height: 20),
             
-            // FAQ List
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: Offset(0, 2),
+            // FAQ List with better spacing
+            ...faqs.asMap().entries.map((entry) {
+              int index = entry.key;
+              Map<String, String> faq = entry.value;
+              
+              return Container(
+                margin: EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: _isExpanded[index] 
+                      ? Colors.green.shade300.withOpacity(0.5)
+                      : Colors.transparent,
+                    width: 1.5,
                   ),
-                ],
-              ),
-              child: Column(
-                children: faqs.map((faq) => _buildFAQItem(faq['question']!, faq['answer']!)).toList(),
-              ),
-            ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: _buildFAQItem(faq['question']!, faq['answer']!, index),
+              );
+            }).toList(),
             
             SizedBox(height: 20),
             
@@ -179,36 +236,113 @@ class FAQScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFAQItem(String question, String answer) {
-    return ExpansionTile(
-      title: Text(
-        question,
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
-        ),
-      ),
-      iconColor: Colors.green.shade600,
-      collapsedIconColor: Colors.grey.shade500,
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-          child: Text(
-            answer,
-            style: TextStyle(
-              color: Colors.grey.shade700,
-              fontSize: 14,
-              height: 1.5,
+  Widget _buildFAQItem(String question, String answer, int index) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Column(
+        children: [
+          // Question Header
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _toggleExpansion(index),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        question,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    AnimatedRotation(
+                      turns: _isExpanded[index] ? 0.5 : 0.0,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: _isExpanded[index] 
+                            ? Colors.green.shade100
+                            : Colors.grey.shade100,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: _isExpanded[index] 
+                            ? Colors.green.shade600
+                            : Colors.grey.shade500,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ],
+          
+          // Answer Section with Animation
+          SizeTransition(
+            sizeFactor: _animations[index],
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.grey.shade200,
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: FadeTransition(
+                  opacity: _animations[index],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 30,
+                        height: 3,
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade400,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        answer,
+                        style: TextStyle(
+                          color: Colors.grey.shade700,
+                          fontSize: 15,
+                          height: 1.6,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

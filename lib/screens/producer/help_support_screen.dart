@@ -12,6 +12,7 @@ class HelpSupportScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           'Help & Support',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),

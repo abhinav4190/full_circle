@@ -28,10 +28,7 @@ class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -318,7 +315,7 @@ class ProducerDashboard extends StatelessWidget {
                   child: _buildActionButton(
                     'Accepted Bids',
                     Icons.calendar_today,
-                     () => Get.to(() => AcceptedBidsHistoryScreen()),
+                    () => Get.to(() => AcceptedBidsHistoryScreen()),
                   ),
                 ),
               ],
